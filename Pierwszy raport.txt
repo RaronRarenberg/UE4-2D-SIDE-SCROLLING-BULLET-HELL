@@ -1,0 +1,8 @@
+W tym tygodniu:
+-ogl¹dam tutoriale do Unreala 4 
+-zainstalowa³em VS2017 i UE4
+-stworzy³em projekt gry w UE4 u¿ywaj¹c szablonu projektu 2D Side Scrolling
+W przysz³ym tygodniu:
+-zmodyfikujê  ruch  postaci tak ¿eby unosi³a siê w powietrzu
+-obejrzê tutoriale na temat tworzenia mechanizmu strza³u
+-zacznê  kolekcjonowaæ assety
