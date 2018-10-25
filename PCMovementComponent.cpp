@@ -12,7 +12,7 @@ void UPCMovementComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 		return;
 	}
 
-	// Get (and then clear) the movement vector that we set in ACollidingPawn::Tick
+	// Get (and then clear) the movement vector that we set in APC::Tick
 	FVector DesiredMovementThisFrame = ConsumeInputVector().GetClampedToMaxSize(1.0f) * DeltaTime * 150.0f;
 	if (!DesiredMovementThisFrame.IsNearlyZero())
 	{
