@@ -49,7 +49,7 @@ ASideScrollBulletHellCharacter::ASideScrollBulletHellCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 
 	// Configure character movement
-	GetCharacterMovement()->GravityScale = 2.0f;
+	GetCharacterMovement()->GravityScale = 1.0f;
 	GetCharacterMovement()->AirControl = 0.80f;
 	GetCharacterMovement()->JumpZVelocity = 1000.f;
 	GetCharacterMovement()->GroundFriction = 3.0f;
