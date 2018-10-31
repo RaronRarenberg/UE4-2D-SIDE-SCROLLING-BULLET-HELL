@@ -5,12 +5,25 @@
 
 #include "GameFramework/Pawn.h"
 #include "Components/InputComponent.h"
+#include "PaperSpriteComponent.h"
+#include "Engine.h"
 #include "PC.generated.h"
 
 UCLASS()
 class SIDESCROLLBULLETHELL_API APC : public APawn
 {
 	GENERATED_BODY()
+
+private:
+	//Direction of playable character
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
+	class UArrowComponent* PCDirection;
+	
+	// Sprite for our character
+	UPROPERTY(VisibleAnywhere, Category = "Character", meta = (AllowPrivateAccess = "true"))
+	class UPaperSpriteComponent* CharacterSprite;
+
+	
 
 public:
 	// Sets default values for this pawn's properties

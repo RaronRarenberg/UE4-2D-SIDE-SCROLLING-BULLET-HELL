@@ -9,6 +9,7 @@
 #include "Runtime/Engine/Classes/Particles/ParticleSystemComponent.h"
 #include "Runtime/Engine/Classes/Camera/CameraComponent.h"
 #include "PCMovementComponent.h"
+#include "PaperSpriteComponent.h"
 
 // Sets default values
 APC::APC()
@@ -19,44 +20,32 @@ APC::APC()
 	// Set this pawn to be controlled by the lowest-numbered player
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
-	// Our root component will be a sphere that reacts to physics
-	USphereComponent* SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("RootComponent"));
-	RootComponent = SphereComponent;
-	SphereComponent->InitSphereRadius(40.0f);
-	SphereComponent->SetCollisionProfileName(TEXT("Pawn"));
-
-	// Create and position a mesh component so we can see where our sphere is
-	UStaticMeshComponent* SphereVisual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisualRepresentation"));
-	SphereVisual->SetupAttachment(RootComponent);
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereVisualAsset(TEXT("/StarterContent/Shapes/Shape_Sphere"));
-	if (SphereVisualAsset.Succeeded())
-	{
-		SphereVisual->SetStaticMesh(SphereVisualAsset.Object);
-		SphereVisual->SetRelativeLocation(FVector(0.0f, 0.0f, -40.0f));
-		SphereVisual->SetWorldScale3D(FVector(0.8f));
+	// Our root component 
+	if (RootComponent == nullptr)
+	{ 
+		RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("CharacterCore"));
 	}
-
-	// Create a particle system that we can activate or deactivate
-	OurParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("MovementParticles"));
-	OurParticleSystem->SetupAttachment(SphereVisual);
-	OurParticleSystem->bAutoActivate = false;
-	OurParticleSystem->SetRelativeLocation(FVector(-20.0f, 0.0f, 20.0f));
-	static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(TEXT("/Game/StarterContent/Particles/P_Fire.P_Fire"));
-	if (ParticleAsset.Succeeded())
-	{
-		OurParticleSystem->SetTemplate(ParticleAsset.Object);
-	}
+	PCDirection = CreateDefaultSubobject<UArrowComponent>(TEXT("CharacterDirection"));
+	PCDirection->AttachTo(RootComponent);
+	
+	//Sprite of our character
+	CharacterSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PC"));
+	CharacterSprite->AttachTo(PCDirection);
 
 	// Use a spring arm to give the camera smooth, natural-feeling motion.
 	USpringArmComponent* SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraAttachmentArm"));
 	SpringArm->SetupAttachment(RootComponent);
-	SpringArm->RelativeRotation = FRotator(-45.f, 0.f, 0.f);
-	SpringArm->TargetArmLength = 400.0f;
-	SpringArm->bEnableCameraLag = true;
-	SpringArm->CameraLagSpeed = 3.0f;
+	SpringArm->SetupAttachment(RootComponent);
+	SpringArm->TargetArmLength = 500.0f;
+	SpringArm->SocketOffset = FVector(0.0f, 0.0f, 75.0f);
+	SpringArm->bAbsoluteRotation = true;
+	SpringArm->bDoCollisionTest = false;
+	SpringArm->RelativeRotation = FRotator(0.0f, -90.0f, 0.0f);
 
 	// Create a camera and attach to our spring arm
 	UCameraComponent* Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("ActualCamera"));
+	Camera->ProjectionMode = ECameraProjectionMode::Orthographic;
+	Camera->OrthoWidth = 2048.0f;
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 
 	// Create an instance of our movement component, and tell it to update the root.
@@ -106,7 +95,7 @@ void APC::MoveRight(float AxisValue)
 void APC::MoveUp(float AxisValue)
 {
 	// Move at 100 units per second right or left
-	CurrentVelocity.Y = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 100.0f;
+	CurrentVelocity.Z = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 100.0f;
 }
 
 void APC::Turn(float AxisValue)
