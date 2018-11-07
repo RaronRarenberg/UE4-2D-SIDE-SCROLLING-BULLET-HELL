@@ -10,12 +10,35 @@
 #include "Runtime/Engine/Classes/Camera/CameraComponent.h"
 #include "PCMovementComponent.h"
 #include "PaperSpriteComponent.h"
+#include "PaperFlipbookComponent.h" 
 
 // Sets default values
-APC::APC()
+APC::APC() 
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+
+	/*struct FConstructorStatics
+	{
+		ConstructorHelpers::FObjectFinderOptional<UPaperFlipbook>flippc;
+		FConstructorStatics()
+			:flippc(TEXT("PaperFlipbook'/Game/2DGraveyardPackHandcraftedArt/Sprites/PlayableBat.PlayableBat'"))
+		{
+		
+		}
+	};
+
+	static FConstructorStatics ConstructorStatics;
+	
+	Flip = ConstructorStatics.flippc.Get();
+
+	FlipComponent = PCIP.CreateDefaultSubobject<UPaperFlipbookComponent>(this, TEXT("FlipbookComponent"));
+	FlipComponent->SetFlipbook(Flip);
+
+	CharacterSprite = PCIP.CreateDefaultSubobject <UPaperSpriteComponent>(this, TEXT("Character"));
+	CharacterSprite->AttachTo(FlipComponent,"gunsock",EAttachLocation::SnapToTarget);*/
+	
 
 	// Set this pawn to be controlled by the lowest-numbered player
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
@@ -26,26 +49,26 @@ APC::APC()
 		RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("CharacterCore"));
 	}
 	PCDirection = CreateDefaultSubobject<UArrowComponent>(TEXT("CharacterDirection"));
-	PCDirection->AttachTo(RootComponent);
+	PCDirection->SetupAttachment(RootComponent);
 	
 	//Sprite of our character
 	CharacterSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("PC"));
-	CharacterSprite->AttachTo(PCDirection);
+	CharacterSprite->SetupAttachment(PCDirection);
 
 	// Use a spring arm to give the camera smooth, natural-feeling motion.
 	USpringArmComponent* SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraAttachmentArm"));
-	SpringArm->SetupAttachment(RootComponent);
-	SpringArm->SetupAttachment(RootComponent);
+	SpringArm->bEnableCameraLag = true;
+	SpringArm->CameraLagSpeed = 4.0f;
 	SpringArm->TargetArmLength = 500.0f;
 	SpringArm->SocketOffset = FVector(0.0f, 0.0f, 75.0f);
 	SpringArm->bAbsoluteRotation = true;
 	SpringArm->bDoCollisionTest = false;
-	SpringArm->RelativeRotation = FRotator(0.0f, -90.0f, 0.0f);
+	SpringArm->SetupAttachment(RootComponent);
 
 	// Create a camera and attach to our spring arm
 	UCameraComponent* Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("ActualCamera"));
 	Camera->ProjectionMode = ECameraProjectionMode::Orthographic;
-	Camera->OrthoWidth = 2048.0f;
+	Camera->OrthoWidth = 1024.0f;
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 
 	// Create an instance of our movement component, and tell it to update the root.
@@ -89,13 +112,13 @@ void APC::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void APC::MoveRight(float AxisValue)
 {
 	// Move at 100 units per second forward or backward
-	CurrentVelocity.X = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 100.0f;
+	CurrentVelocity.X = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 200.0f;
 }
 
 void APC::MoveUp(float AxisValue)
 {
 	// Move at 100 units per second right or left
-	CurrentVelocity.Z = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 100.0f;
+	CurrentVelocity.Z = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 200.0f;
 }
 
 void APC::Turn(float AxisValue)

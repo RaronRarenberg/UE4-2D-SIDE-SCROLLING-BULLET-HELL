@@ -7,6 +7,7 @@
 #include "Components/InputComponent.h"
 #include "PaperSpriteComponent.h"
 #include "Engine.h"
+#include "PaperCharacter.h"
 #include "PC.generated.h"
 
 UCLASS()
@@ -23,7 +24,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Character", meta = (AllowPrivateAccess = "true"))
 	class UPaperSpriteComponent* CharacterSprite;
 
-	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
+	class UPaperFlipbookComponent* FlipComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
+	class UPaperFlipbook* Flip;
 
 public:
 	// Sets default values for this pawn's properties
