@@ -1,0 +1,9 @@
+W tym tygodniu:
+-postac sie porusza
+-posiadam assety, z ktorych moge juz rzezbic swiat
+-animacje postaci na  razie przesuwam na kolejne tygodnie
+-pracuje nad pociskami, ktore postac wystrzeli
+W nastepnym tygodniu:
+-postac bedzie strzelac
+-prawdopodobnie powstanie prototyp pierwszej lokacji 
+-powstawiam jakichs wrogow, posprawdzam kolizje
