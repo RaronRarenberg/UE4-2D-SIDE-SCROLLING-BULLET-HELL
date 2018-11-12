@@ -64,6 +64,7 @@ APC::APC()
 	SpringArm->bAbsoluteRotation = true;
 	SpringArm->bDoCollisionTest = false;
 	SpringArm->SetupAttachment(RootComponent);
+	SpringArm->RelativeRotation = FRotator(0.0f, -90.0f, 0.0f);
 
 	// Create a camera and attach to our spring arm
 	UCameraComponent* Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("ActualCamera"));
@@ -107,6 +108,10 @@ void APC::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	// Respond every frame to the values of our two movement axes, "MoveRight" and "MoveUp".
 	InputComponent->BindAxis("MoveX", this, &APC::MoveRight);
 	InputComponent->BindAxis("MoveY", this, &APC::MoveUp);
+	InputComponent->BindAction("Fire1", EInputEvent::IE_Pressed, this, &APC::Fire1Pressed);
+	InputComponent->BindAction("Fire1", EInputEvent::IE_Released, this, &APC::Fire1Released);
+	InputComponent->BindAction("Fire2", EInputEvent::IE_Pressed, this, &APC::Fire2Pressed);
+	InputComponent->BindAction("Fire2", EInputEvent::IE_Released, this, &APC::Fire2Released);
 }
 
 void APC::MoveRight(float AxisValue)
@@ -121,6 +126,16 @@ void APC::MoveUp(float AxisValue)
 	CurrentVelocity.Z = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 200.0f;
 }
 
+void FPCInput::Fire1(bool bPressed)
+{
+	bFire1 = bPressed;
+}
+
+void FPCInput::Fire2(bool bPressed)
+{
+	bFire2 = bPressed;
+}
+
 void APC::Turn(float AxisValue)
 {
 	FRotator NewRotation = GetActorRotation();
@@ -128,13 +143,23 @@ void APC::Turn(float AxisValue)
 	SetActorRotation(NewRotation);
 }
 
-void APC::ParticleToggle()
+void APC::Fire1Pressed()
 {
-	if (OurParticleSystem && OurParticleSystem->Template)
-	{
-		OurParticleSystem->ToggleActive();
-	}
+	APC.Fire1(true);
 }
+void APC::Fire1Released()
+{
+	APC.Fire1(false);
+}
+void APC::Fire2Pressed()
+{
+	APC.Fire2(true);
+}
+void APC::Fire2Released() 
+{
+	APC.Fire2(false);
+}
+
 UPawnMovementComponent* APC::GetMovementComponent() const
 {
 	return OurMovementComponent;
