@@ -11,6 +11,7 @@
 #include "PCMovementComponent.h"
 #include "PaperSpriteComponent.h"
 #include "PaperFlipbookComponent.h" 
+#include "Missile.h"
 
 // Sets default values
 APC::APC() 
@@ -59,7 +60,7 @@ APC::APC()
 	USpringArmComponent* SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraAttachmentArm"));
 	SpringArm->bEnableCameraLag = true;
 	SpringArm->CameraLagSpeed = 4.0f;
-	SpringArm->TargetArmLength = 500.0f;
+	SpringArm->TargetArmLength = 10000.0f;
 	SpringArm->SocketOffset = FVector(0.0f, 0.0f, 75.0f);
 	SpringArm->bAbsoluteRotation = true;
 	SpringArm->bDoCollisionTest = false;
@@ -75,6 +76,12 @@ APC::APC()
 	// Create an instance of our movement component, and tell it to update the root.
 	OurMovementComponent = CreateDefaultSubobject<UPCMovementComponent>(TEXT("CustomMovementComponent"));
 	OurMovementComponent->UpdatedComponent = RootComponent;
+
+	//Cooldown between shots
+	Fire1Cooldown = 0.2f;
+
+	static ConstructorHelpers::FObjectFinder<UClass> MissileClassFinder(TEXT("Blueprint'/Game/BulletHell/MissileBP.MissileBP_C'"));
+	Projectile = MissileClassFinder.Object;
 }
 
 // Called when the game starts or when spawned
@@ -97,6 +104,28 @@ void APC::Tick(float DeltaTime)
 			SetActorLocation(NewLocation);
 		}
 	}
+	//Input handler
+	const FPCInput& CurrentInput = GetCurrentInput();
+	//Spawn projectile by shooting
+	if (CurrentInput.bFire1 )
+	{
+		float CurrentTime = GetWorld()->GetTimeSeconds();
+		//Delay between shots
+		if (Fire1ReadyTime <= CurrentTime)
+		{
+			FVector Loc = CharacterSprite->GetComponentLocation();
+			FRotator Rot = CharacterSprite->GetComponentRotation();
+			
+			
+			AMissile* NewMissile = GetWorld()->SpawnActor<class AMissile>(Projectile, Loc, Rot);
+			UE_LOG(LogTemp, Warning, TEXT("FEUER!"));
+
+			// Set the cooldown timer.
+			Fire1ReadyTime = CurrentTime + Fire1Cooldown;
+
+		}
+	}
+
 }
 
 // Called to bind functionality to input
@@ -104,7 +133,6 @@ void APC::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
-	InputComponent->BindAction("ParticleToggle", IE_Pressed, this, &APC::ParticleToggle);
 	// Respond every frame to the values of our two movement axes, "MoveRight" and "MoveUp".
 	InputComponent->BindAxis("MoveX", this, &APC::MoveRight);
 	InputComponent->BindAxis("MoveY", this, &APC::MoveUp);
@@ -145,23 +173,24 @@ void APC::Turn(float AxisValue)
 
 void APC::Fire1Pressed()
 {
-	APC.Fire1(true);
+	PCInput.Fire1(true);
 }
 void APC::Fire1Released()
 {
-	APC.Fire1(false);
+	PCInput.Fire1(false);
 }
 void APC::Fire2Pressed()
 {
-	APC.Fire2(true);
+	PCInput.Fire2(true);
 }
 void APC::Fire2Released() 
 {
-	APC.Fire2(false);
+	PCInput.Fire2(false);
 }
 
 UPawnMovementComponent* APC::GetMovementComponent() const
 {
 	return OurMovementComponent;
 }
+
 

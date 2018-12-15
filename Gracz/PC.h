@@ -8,9 +8,10 @@
 #include "PaperSpriteComponent.h"
 #include "Engine.h"
 #include "PaperCharacter.h"
+#include "Missile.h"
 #include "PC.generated.h"
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FPCInput
 {
 	GENERATED_BODY()
@@ -49,6 +50,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	
+
 	const FPCInput& GetCurrentInput() const
 	{
 		return PCInput; 
@@ -61,6 +64,12 @@ public:
 
 	//We can enable other classes in the engine to access the Pawn Movement Component
 	virtual UPawnMovementComponent* GetMovementComponent() const override;
+
+	UFUNCTION (BlueprintCallable, Category = "Input")
+	const FPCInput& GetCurrentInput() { return PCInput; }
+protected:
+	UPROPERTY(BlueprintReadWrite,EditAnywhere, Category = "Missile")
+	TSubclassOf<AMissile> Projectile;
 
 private:
 
@@ -75,7 +84,6 @@ private:
 	void Fire2Pressed();
 	void Fire2Released();
 	void Turn(float AxisValue);
-	void ParticleToggle();
 
 	//Direction of playable character
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
@@ -84,6 +92,17 @@ private:
 	// Sprite for our character
 	UPROPERTY(VisibleAnywhere, Category = "Character", meta = (AllowPrivateAccess = "true"))
 		class UPaperSpriteComponent* CharacterSprite;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+		FPCInput PCInput;
+
+	// Time to delay between Fire1 commands.
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Fire", meta = (AllowPrivateAccess = "true"))
+		float Fire1Cooldown;
+
+	// If this value is greater than the current game time, Fire1 is ignored because it has been fired too recently.
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Fire", meta = (AllowPrivateAccess = "true"))
+		float Fire1ReadyTime;
 
 	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
 	class UPaperFlipbookComponent* FlipComponent;

@@ -6,6 +6,7 @@
 // Sets default values
 AMissile::AMissile()
 {
+	
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	Speed = 600.0f;
@@ -17,7 +18,7 @@ void AMissile::BeginPlay()
 	Super::BeginPlay();
 	
 	FTimerHandle TimeToVanish;
-	GetWorldTimerManager().SetTimer(TimeToVanish, this, &AMissile::Explode, 0.5f);
+	GetWorldTimerManager().SetTimer(TimeToVanish, this, &AMissile::Explode, 2.5f);
 
 }
 
