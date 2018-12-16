@@ -1,17 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PC.h"
-#include "Components/SphereComponent.h"
 #include "Components/InputComponent.h"
-#include "Components/StaticMeshComponent.h"
 #include "Runtime/Engine/Classes/GameFramework/SpringArmComponent.h"
 #include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
-#include "Runtime/Engine/Classes/Particles/ParticleSystemComponent.h"
 #include "Runtime/Engine/Classes/Camera/CameraComponent.h"
 #include "PCMovementComponent.h"
 #include "PaperSpriteComponent.h"
-#include "PaperFlipbookComponent.h" 
-#include "Missile.h"
+#include "Components/ArrowComponent.h"
 
 // Sets default values
 APC::APC() 
@@ -57,20 +53,20 @@ APC::APC()
 	CharacterSprite->SetupAttachment(PCDirection);
 
 	// Use a spring arm to give the camera smooth, natural-feeling motion.
-	USpringArmComponent* SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraAttachmentArm"));
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraAttachmentArm"));
 	SpringArm->bEnableCameraLag = true;
 	SpringArm->CameraLagSpeed = 4.0f;
-	SpringArm->TargetArmLength = 10000.0f;
-	SpringArm->SocketOffset = FVector(0.0f, 0.0f, 75.0f);
+	SpringArm->TargetArmLength = 1000.0f;
+	SpringArm->SocketOffset = FVector(0.0f, 75.0f, 0.0f);
 	SpringArm->bAbsoluteRotation = true;
 	SpringArm->bDoCollisionTest = false;
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->RelativeRotation = FRotator(0.0f, -90.0f, 0.0f);
 
 	// Create a camera and attach to our spring arm
-	UCameraComponent* Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("ActualCamera"));
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("ActualCamera"));
 	Camera->ProjectionMode = ECameraProjectionMode::Orthographic;
-	Camera->OrthoWidth = 1024.0f;
+	Camera->OrthoWidth = 4096.0f;
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 
 	// Create an instance of our movement component, and tell it to update the root.
@@ -78,7 +74,7 @@ APC::APC()
 	OurMovementComponent->UpdatedComponent = RootComponent;
 
 	//Cooldown between shots
-	Fire1Cooldown = 0.2f;
+	Fire1Cooldown = 0.05f;
 
 	static ConstructorHelpers::FObjectFinder<UClass> MissileClassFinder(TEXT("Blueprint'/Game/BulletHell/MissileBP.MissileBP_C'"));
 	Projectile = MissileClassFinder.Object;
@@ -144,14 +140,14 @@ void APC::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void APC::MoveRight(float AxisValue)
 {
-	// Move at 100 units per second forward or backward
-	CurrentVelocity.X = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 200.0f;
+	// Move at 1200 units per second forward or backward
+	CurrentVelocity.X = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 1200.0f;
 }
 
 void APC::MoveUp(float AxisValue)
 {
-	// Move at 100 units per second right or left
-	CurrentVelocity.Z = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 200.0f;
+	// Move at 1200 units per second right or left
+	CurrentVelocity.Z = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 1200.0f;
 }
 
 void FPCInput::Fire1(bool bPressed)

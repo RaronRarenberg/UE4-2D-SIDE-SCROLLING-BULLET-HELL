@@ -2,11 +2,9 @@
 
 #pragma once
 
-
 #include "GameFramework/Pawn.h"
 #include "Components/InputComponent.h"
 #include "PaperSpriteComponent.h"
-#include "Engine.h"
 #include "PaperCharacter.h"
 #include "Missile.h"
 #include "PC.generated.h"
@@ -65,11 +63,19 @@ public:
 	//We can enable other classes in the engine to access the Pawn Movement Component
 	virtual UPawnMovementComponent* GetMovementComponent() const override;
 
+	
+
 	UFUNCTION (BlueprintCallable, Category = "Input")
 	const FPCInput& GetCurrentInput() { return PCInput; }
 protected:
 	UPROPERTY(BlueprintReadWrite,EditAnywhere, Category = "Missile")
 	TSubclassOf<AMissile> Projectile;
+	
+	UPROPERTY(EditAnywhere)
+	class USpringArmComponent* SpringArm;
+
+	UPROPERTY(EditAnywhere)
+	class UCameraComponent* Camera;
 
 private:
 
