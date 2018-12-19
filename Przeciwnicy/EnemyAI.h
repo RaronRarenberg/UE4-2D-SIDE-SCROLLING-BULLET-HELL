@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include "EnemyAI.generated.h"
 
+class AEnemy;
 /**
  * 
  */
@@ -23,6 +24,6 @@ public:
 
 protected:
 	//Pawn
-	UPROPERTY(BlueprintReadOnly, Category = "Zombie")
+	UPROPERTY(BlueprintReadOnly, Category = "Enemy")
 	AEnemy* EnemyPawn;
 };

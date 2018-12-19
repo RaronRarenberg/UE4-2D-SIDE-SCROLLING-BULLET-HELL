@@ -2,6 +2,7 @@
 
 #include "EnemyShooter.h"
 #include "Missile.h"
+#include "SideScrollBulletHell.h"
 #include "Components/ArrowComponent.h"
 
 // Sets default values
@@ -43,12 +44,11 @@ void AEnemyShooter::Tick(float DeltaTime)
 	//Input handler
 	const FEnemyShooterInput& CurrentInput = GetCurrentInput();
 	//Spawn projectile by shooting
-	if (CurrentInput.bFire1)
+	
+	float CurrentTime = GetWorld()->GetTimeSeconds();
+	//Delay between shots
+	if (Fire1ReadyTime <= CurrentTime)
 	{
-		float CurrentTime = GetWorld()->GetTimeSeconds();
-		//Delay between shots
-		if (Fire1ReadyTime <= CurrentTime)
-		{
 			FVector Loc = EnemySprite->GetComponentLocation();
 			FRotator Rot = EnemySprite->GetComponentRotation();
 
@@ -59,8 +59,8 @@ void AEnemyShooter::Tick(float DeltaTime)
 			// Set the cooldown timer.
 			Fire1ReadyTime = CurrentTime + Fire1Cooldown;
 
-		}
 	}
+	
 }
 
 // Called to bind functionality to input

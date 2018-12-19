@@ -7,4 +7,5 @@ ASideScrollBulletHellGameMode::ASideScrollBulletHellGameMode()
 {
 	// Set default pawn class to our character
 	DefaultPawnClass = ASideScrollBulletHellCharacter::StaticClass();	
+	PlayInZPlane = 0.0f;
 }

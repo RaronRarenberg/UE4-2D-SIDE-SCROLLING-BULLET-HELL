@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "EnemyAI.h"
+#include "Enemy.h"
 
 void AEnemyAI::Tick(float DeltaTime)
 {
@@ -13,20 +14,17 @@ void AEnemyAI::Tick(float DeltaTime)
 			float SidewaysToTarget = FVector::DotProduct(DirectionToTarget, EnemyPawn->GetActorRightVector());
 			float DeltaYawDesired = FMath::Atan2(SidewaysToTarget, ToTarget);
 		
+			if (EnemyPawn->ShouldAttack())
+			{
+				EnemyPawn->AddAttackInput();
+			}
+			else
+			{
+				//Fastest when facing target
+				EnemyPawn->AddMovementInput(FVector(1.0f, 0.0f, 0.0f), FMath::GetMappedRangeValueClamped(FVector2D(-0.707f, 0.707f), FVector2D(0.0f, 1.0f), ToTarget));
+				EnemyPawn->AddRotationInput(DeltaYawDesired);
+			}
 		}
-
-		if (EnemyPawn->ShouldAttack())
-		{
-			EnemyPawn->AddAttackInput();
-		}
-		else
-		{
-			//Fastest when facing target
-			EnemyPawn->AddMovementInput(FVector(1.0f, 0.0f, 0.0f), FMath::GetMappedRangeValueClamped(FVector2D(-0.707f, 0.707f), FVector2D(0.0f, 1.0f), ToTarget));
-			//
-			EnemyPawn->AddRotationInput(DeltaYawDesired);
-		}
-		
 	}
 }
 

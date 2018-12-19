@@ -1,13 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PC.h"
-#include "Components/InputComponent.h"
-#include "Runtime/Engine/Classes/GameFramework/SpringArmComponent.h"
-#include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
-#include "Runtime/Engine/Classes/Camera/CameraComponent.h"
-#include "PCMovementComponent.h"
+#include "SideScrollBulletHell.h"
 #include "PaperSpriteComponent.h"
-#include "Components/ArrowComponent.h"
+#include "Enemy.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APC::APC() 
@@ -56,7 +53,7 @@ APC::APC()
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraAttachmentArm"));
 	SpringArm->bEnableCameraLag = true;
 	SpringArm->CameraLagSpeed = 4.0f;
-	SpringArm->TargetArmLength = 1000.0f;
+	SpringArm->TargetArmLength = 100.0f;
 	SpringArm->SocketOffset = FVector(0.0f, 75.0f, 0.0f);
 	SpringArm->bAbsoluteRotation = true;
 	SpringArm->bDoCollisionTest = false;
@@ -147,7 +144,7 @@ void APC::MoveRight(float AxisValue)
 void APC::MoveUp(float AxisValue)
 {
 	// Move at 1200 units per second right or left
-	CurrentVelocity.Z = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 1200.0f;
+	CurrentVelocity.Y = FMath::Clamp(AxisValue, -1.0f, 1.0f) * 1200.0f;
 }
 
 void FPCInput::Fire1(bool bPressed)

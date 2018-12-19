@@ -27,7 +27,7 @@ void AMissile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	FVector Loc = GetActorLocation();
-	Loc += (DeltaTime * Speed) * GetTransform().GetUnitAxis(EAxis::X);
+	Loc += DeltaTime * Speed * GetTransform().GetUnitAxis(EAxis::X);
 	SetActorLocation(Loc);
 }
 

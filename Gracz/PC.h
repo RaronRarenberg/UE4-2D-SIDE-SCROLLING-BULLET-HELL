@@ -6,6 +6,7 @@
 #include "Components/InputComponent.h"
 #include "PaperSpriteComponent.h"
 #include "PaperCharacter.h"
+#include "PCMovementComponent.h"
 #include "Missile.h"
 #include "PC.generated.h"
 

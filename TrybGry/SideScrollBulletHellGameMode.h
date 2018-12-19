@@ -18,4 +18,8 @@ class ASideScrollBulletHellGameMode : public AGameModeBase
 	GENERATED_BODY()
 public:
 	ASideScrollBulletHellGameMode();
+
+	// Every game actor should snap to this Z value during BeginPlay.  Default is 0.
+	UPROPERTY(EditAnywhere)
+		float PlayInZPlane;
 };
