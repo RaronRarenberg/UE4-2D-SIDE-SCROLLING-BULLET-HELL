@@ -12,7 +12,7 @@ AEnemy::AEnemy()
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	Health = 100.0f;
+	Health = 10;
 	SightDistance = 500.0f;
 	SightAngle = 60.0f;
 	YawSpeed = 90.0f;
@@ -185,4 +185,23 @@ bool AEnemy::ConsumeAttackInput()
 	bool bRetVal = bAttackInput;
 	bAttackInput = false;
 	return bRetVal;
+}
+
+void AEnemy::ReceiveDamage(int32 IncomingDamage)
+{
+	if (IncomingDamage >= Health)
+	{
+		
+		if (Health <= 0)
+		{
+			Health = -1;
+			Destroy();
+		}
+		return;
+	}
+	Health -= IncomingDamage;
+}
+int32 AEnemy::GetHealthRemaining()
+{
+	return Health;
 }

@@ -24,10 +24,24 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	float Speed;
 
+	//Missile's radius for collisions
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	float Radius;
+
+	//Damage done by missile
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	int32 DirectDamage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	FName MovementCollisionProfile;
+
 protected:
-	
-	UFUNCTION(BlueprintNativeEvent, Category = "Projectile")
 	void Explode();
-	virtual void Explode_Implementation();
+
+	FTimerHandle ExplodeTimerHandle;
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Projectile")
+	void OnExplode();
+	virtual void OnExplode_Implementation();
 
 };

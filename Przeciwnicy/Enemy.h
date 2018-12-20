@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "DamageInterface.h"
 #include "Enemy.generated.h"
 
 class APC;
@@ -76,6 +77,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input", meta = (Keywords = "ConsumeInput"))
 	virtual bool ConsumeAttackInput();
 
+	//IDamageInterface
+	virtual void ReceiveDamage(int32 IncomingDamage) ;
+	virtual int32 GetHealthRemaining() ;
+	//IDamageInterface
 
 private:
 	//Actor we target
@@ -95,7 +100,8 @@ protected:
 
 	//HP
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy", meta = (ClampMin = "0.0"))
-	float Health;
+	int32 Health;
+
 	//How far can enemy see
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy", meta = (ClampMin = "0.0"))
 	float SightDistance;
