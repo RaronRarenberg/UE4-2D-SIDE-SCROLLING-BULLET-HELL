@@ -12,4 +12,3 @@
 	- Muzyka w tle <-Muzyka to na razie niepotrzebny feature
 	- Możliwość zmiany muzyki klawiszem (jeżeli znajdę na to sposób)
 	- Pociski wystrzeliwane przez Bossów będą układać się we wzory znane z gier typu bullet hell![Screen](bullet_hell.png)
-*
