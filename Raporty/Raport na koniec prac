@@ -1,0 +1,17 @@
+W czasie prac nad projektem nastąpiło w nim kilka zmian:
+
+-przestałem pisać kod w C++, przez nieaktualne poradniki i brak doświadczenia z silnikiem praca przy projekcie była żmudna 
+i często godziny nauki z tutoriali  poszły na marne
+
+-przeszedłem na programowanie wizualne za  pomocą blueprintów, dzięki  czemu efektywność wzrosła kilkukrotnie, 
+to jest mogłem korzystać z gotowych funkcji, których zaprogramowanie w kodzie zajęłoby mnóstwo czasu i nie zmieściłbym się
+w wyznaczonym terminie
+
+-zaprogramowanie zakładanego ruchu pocisków wroga wymagało sporo czasu na dostosowywanie i testowanie,
+ostatecznie zrezygnowałem z niego, ponieważ mnóstwo czasu straciłem na odbudowanie projektu po przejściu na blueprinty
+oraz wyżej wspomniane poradniki
+
+-dodałem kilka funkcji, których nie było w pierwotnych założeniach, ale uznałem, że powinny się w grze znaleźć:
+*system  progresji,  czyli zdobywanie poziomów i punktów doświadczenia
+*system używania i regeneracji amunicji
+*zalążek systemu fabularnego  poprzez  wprowadzenie kamer i narracji dźwiękowej
