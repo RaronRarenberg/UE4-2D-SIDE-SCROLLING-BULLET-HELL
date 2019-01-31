@@ -1,0 +1,11 @@
+W tym tygodniu:
+-stworzy³em w³asn¹ klasê postaci PC zamiast modyfikowaæ gotow¹
+-MovementComponent zawiera informacje o fizyce postaci
+-postaæ w konstruktorze dostaje swoje bindy do poruszania siê,
+ oraz informacjê o jej wygl¹dzie
+-postaæ ma kamerê, która jest zawieszona na sprê¿ynie
+W przysz³ym tygodniu:
+-postaæ zacznie  siê poruszaæ i wygl¹daæ
+-pobawiê siê level editorem i zacznê tworzyæ jakiœ œwiat
+-mam plan stworzyæ klasê pocisku,
+który bêdzie kolidowa³ z otoczeniem
